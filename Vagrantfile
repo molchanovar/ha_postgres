@@ -37,5 +37,6 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", run: "always", inline: <<-SHELL
 sudo sed -i "s/.*PasswordAuthentication\ no/PasswordAuthentication\ yes/g" /etc/ssh/sshd_config
 sudo systemctl restart sshd
+sudo apt update && sudo apt upgrade -y
         SHELL
 end
