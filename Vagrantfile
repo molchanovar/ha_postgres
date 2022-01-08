@@ -23,7 +23,7 @@ Vagrant.configure(2) do |config|
   config.vm.define "haproxy" do |hpxy|
     hpxy.vm.network :private_network, ip: "192.168.1.13", virtualbox__intnet: "net1"
     hpxy.vm.network :forwarded_port, guest: 22, host: 2703, id: "ssh"
-    hpxy.vm.network :forwarded_port, guest: 80, host: 9003, id: "http"
+    hpxy.vm.network :forwarded_port, guest: 7000, host: 9003, id: "web_gui"
     hpxy.vm.hostname = "haproxy"
   end
 
