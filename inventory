@@ -1,0 +1,15 @@
+[postgres]
+psql1 ansible_host=192.168.1.11
+psql2 ansible_host=192.168.1.12
+
+[services]
+haproxy ansible_host=192.168.1.13
+etcd    ansible_host=192.168.1.14
+
+[ha_postgres:children]
+postgres
+services
+
+[ha_postgres:vars]
+ansible_ssh_user=vagrant
+ansible_ssh_private_key_file=~/.ssh/id_rsa
