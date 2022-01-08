@@ -34,9 +34,19 @@ Vagrant.configure(2) do |config|
     etcd.vm.hostname = "etcd"
   end
 
+  config.vm.define "ansible" do |a|
+    a.vm.network :private_network, ip: "192.168.1.15", virtualbox__intnet: "net1"
+    a.vm.network :forwarded_port, guest: 22, host: 2700, id: "ssh"
+    a.vm.hostname = "ansible"
+  end
+
+  config.vm.provision "file", source: "~/.ssh/id_rsa", destination: "~/.ssh/id_rsa"
+  config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/id_rsa.pub"
   config.vm.provision "shell", run: "always", inline: <<-SHELL
 sudo sed -i "s/.*PasswordAuthentication\ no/PasswordAuthentication\ yes/g" /etc/ssh/sshd_config
 sudo systemctl restart sshd
-sudo apt update && sudo apt upgrade -y
+sudo cat /home/vagrant/.ssh/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys
+sudo cat /home/vagrant/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+sudo apt-get update && sudo apt-get upgrade -y
         SHELL
 end
