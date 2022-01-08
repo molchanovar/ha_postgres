@@ -41,7 +41,6 @@ Vagrant.configure(2) do |config|
     a.vm.provision "shell", run: "always", inline: <<-SHELL
 sudo apt-add-repository ppa:ansible/ansible    
 sudo apt-get update && sudo apt-get install python3-pip python3-setuptools python3-wheel --yes --quiet && pip3 install ansible
-export PATH=$PATH:/usr/local/bin/ansible
         SHELL
   end
 
@@ -52,5 +51,6 @@ sudo sed -i "s/.*PasswordAuthentication\ no/PasswordAuthentication\ yes/g" /etc/
 sudo systemctl restart sshd
 sudo cat /home/vagrant/.ssh/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys
 sudo cat /home/vagrant/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+sudo chown 600 /home/vagrant/.ssh/id_rsa
         SHELL
 end
