@@ -38,6 +38,11 @@ Vagrant.configure(2) do |config|
     a.vm.network :private_network, ip: "192.168.1.15", virtualbox__intnet: "net1"
     a.vm.network :forwarded_port, guest: 22, host: 2700, id: "ssh"
     a.vm.hostname = "ansible"
+    a.vm.provision "shell", run: "always", inline: <<-SHELL
+sudo apt-add-repository ppa:ansible/ansible    
+sudo apt-get update && sudo apt-get install python3-pip python3-setuptools python3-wheel --yes --quiet && pip3 install ansible
+export PATH=$PATH:/usr/local/bin/ansible
+        SHELL
   end
 
   config.vm.provision "file", source: "~/.ssh/id_rsa", destination: "~/.ssh/id_rsa"
@@ -47,6 +52,5 @@ sudo sed -i "s/.*PasswordAuthentication\ no/PasswordAuthentication\ yes/g" /etc/
 sudo systemctl restart sshd
 sudo cat /home/vagrant/.ssh/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys
 sudo cat /home/vagrant/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
-sudo apt-get update && sudo apt-get upgrade -y
         SHELL
 end
