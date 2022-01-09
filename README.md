@@ -15,6 +15,7 @@ Etcd  		192.168.1.14 		etcd
 ansible -i inventory -m ping <host_name>
 ansible-playbook -i inventory <role_name.yml> -t <tag_name> -v
 
+sudo -i -u postgres
 pg_lsclusters
 systemctl status patroni
 systemctl status postgresql
